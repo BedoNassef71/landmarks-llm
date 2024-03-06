@@ -49,4 +49,5 @@ def user_input(class_name):
 
     return response
 
-user_input("Hello");
+ans = user_input("Ahmose")
+print(ans)
