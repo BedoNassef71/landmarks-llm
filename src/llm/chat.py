@@ -48,3 +48,5 @@ def user_input(class_name):
         , return_only_outputs=True)
 
     return response
+
+user_input("Hello");
