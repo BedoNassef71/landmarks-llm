@@ -9,6 +9,9 @@ from langchain.prompts import PromptTemplate
 
 os.environ['GOOGLE_API_KEY'] = "AIzaSyCTMXGCg2BFuyqpCYpJ2E1eg-rST9p3GWk"
 
+texts_directory = os.path.abspath('./texts')
+print(texts_directory)
+
 def get_conversational_chain():
     prompt_template = """
     Answer the question as full detailed as possible from the provided context \n\n
@@ -28,7 +31,7 @@ def get_conversational_chain():
 
 
 def user_input(class_name):
-    loader = DirectoryLoader('../../texts', glob="*" + class_name + "*/*.txt")
+    loader = DirectoryLoader(texts_directory, glob="*" + class_name + "*/*.txt")
     raw_text = loader.load()
 
     text_splitter = CharacterTextSplitter(chunk_size=1024, chunk_overlap=256)
