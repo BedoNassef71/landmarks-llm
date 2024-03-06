@@ -1,0 +1,5 @@
+.venv
+keras
+faiss_index
+./src/images
+./src/routes
