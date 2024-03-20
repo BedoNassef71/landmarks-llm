@@ -23,6 +23,7 @@ prompt = PromptTemplate(template=prompt_template, input_variables=["context", "q
 chain = load_qa_chain(model, chain_type="stuff", prompt=prompt)
 embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
 
+new_db = FAISS.load_local("faiss_index", embeddings, allow_dangerous_deserialization=True)
 
 def get_conversational_chain():
     return chain
@@ -31,13 +32,30 @@ def get_conversational_chain():
 app = Flask(__name__)
 
 
-@app.route('/chat', methods=['POST'])
+@app.route('/info', methods=['POST'])
 def get_class_info():
     data = request.get_json()
     class_name = data['class_name']
     result = user_input(class_name)
     return jsonify(result)
 
+@app.route('/chat', methods=['POST'])
+def get_question():
+    data = request.get_json()
+    question = data['question']
+    result = ans_question(question)
+    return jsonify(result)
+
+def ans_question(user_question):
+    docs = new_db.similarity_search(user_question)
+
+    chain = get_conversational_chain()
+
+    response = chain(
+        {"input_documents": docs, "question": user_question}
+        , return_only_outputs=True)
+
+    return response
 
 def user_input(class_name):
     loader = DirectoryLoader('texts', glob="*" + class_name + "*/*.txt")
