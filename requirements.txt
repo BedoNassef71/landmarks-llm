@@ -1,4 +1,7 @@
-langchain_community
+flask
 langchain
-Flask
-langchain_google_genai
+langchain-community
+faiss-cpu
+requests
+langchain-google-genai
+unstructured
